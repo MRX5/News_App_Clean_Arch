@@ -2,19 +2,14 @@ package com.example.news_app.features.ui.home
 
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.news_app.R
-import com.example.news_app.common.extentions.hide
-import com.example.news_app.common.extentions.show
+import com.example.news_app.utils.common.extentions.hide
+import com.example.news_app.utils.common.extentions.show
 import com.example.news_app.databinding.FragmentHomeBinding
 import com.example.news_app.domain.model.News
 import com.example.news_app.features.base.BaseFragment

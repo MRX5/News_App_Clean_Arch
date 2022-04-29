@@ -1,4 +1,4 @@
-package com.example.news_app.common
+package com.example.news_app.utils.common
 
 import android.view.View
 import android.view.View.GONE

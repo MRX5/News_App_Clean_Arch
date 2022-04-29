@@ -4,13 +4,9 @@ import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.news_app.R
-import com.example.news_app.common.extentions.hide
 import com.example.news_app.databinding.ActivityMainBinding
-import com.example.news_app.domain.model.News
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
