@@ -13,6 +13,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.news_app.R
+import com.example.news_app.common.extentions.hide
+import com.example.news_app.common.extentions.show
 import com.example.news_app.databinding.FragmentHomeBinding
 import com.example.news_app.domain.model.News
 import com.example.news_app.features.base.BaseFragment
@@ -25,6 +27,7 @@ import com.example.news_app.utils.Constants.SPORTS
 import com.example.news_app.utils.Constants.TECHNOLOGY
 import com.example.news_app.utils.State
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 const val TAG="mostafa"
 @AndroidEntryPoint
@@ -34,17 +37,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     private val homeAdapter by lazy {
         HomeAdapter{
-            val directions=HomeFragmentDirections.actionNavigationHomeToDetailsFragment(it)
+            val directions=HomeFragmentDirections.actionNavigationHomeToDetailsActivity(it)
             findNavController().navigate(directions)
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         setupRecyclerView()
-
+        initializeViews()
         getNews()
+        observe()
+    }
 
+    private fun initializeViews() {
         binding.apply {
             chipAllNews.setOnClickListener(clickListener)
             chipBusiness.setOnClickListener(clickListener)
@@ -54,7 +61,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
             chipSports.setOnClickListener(clickListener)
             chipTechnology.setOnClickListener(clickListener)
         }
-        observe()
+
     }
 
     private fun setupRecyclerView() {
@@ -118,139 +125,36 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         }
     }
 
+
     private fun getNews(category:String=""){
         viewModel.getNews(category,"eg")
+        viewModel.lastCheckedCategory=category
     }
 
     private fun observe(){
+        observeCategory(viewModel.news)
+        observeCategory(viewModel.sports)
+        observeCategory(viewModel.health)
+        observeCategory(viewModel.business)
+        observeCategory(viewModel.entertainment)
+        observeCategory(viewModel.science)
+        observeCategory(viewModel.technology)
+    }
+
+    private fun observeCategory(categoryStateFlow: StateFlow<State<List<News>>>) {
         lifecycleScope.launchWhenCreated {
-            viewModel.news.collect {
+            categoryStateFlow.collect {
                 when(it){
                     is State.Loading->{
-                        binding.homeProgressBar.visibility=VISIBLE
+                        binding.homeProgressBar.show()
                     }
                     is State.Success->{
                         clearAdapter()
-                        binding.homeProgressBar.visibility=GONE
+                        binding.homeProgressBar.hide()
                         homeAdapter.setData(it.data)
                     }
                     is State.Error->{
-                        binding.homeProgressBar.visibility=VISIBLE
-                        Toast.makeText(context,it.msg,Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-        }
-
-        lifecycleScope.launchWhenCreated {
-            viewModel.business.collect {
-                when(it){
-                    is State.Loading->{
-                        binding.homeProgressBar.visibility=VISIBLE
-                    }
-                    is State.Success->{
-                        clearAdapter()
-                        binding.homeProgressBar.visibility=GONE
-                        homeAdapter.setData(it.data)
-                    }
-                    is State.Error->{
-                        binding.homeProgressBar.visibility=VISIBLE
-                        Toast.makeText(context,it.msg,Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-        }
-
-        lifecycleScope.launchWhenCreated {
-            viewModel.sports.collect {
-                when(it){
-                    is State.Loading->{
-                        binding.homeProgressBar.visibility=VISIBLE
-                    }
-                    is State.Success->{
-                        clearAdapter()
-                        binding.homeProgressBar.visibility=GONE
-                        homeAdapter.setData(it.data)
-                    }
-                    is State.Error->{
-                        binding.homeProgressBar.visibility=VISIBLE
-                        Toast.makeText(context,it.msg,Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-
-        }
-
-        lifecycleScope.launchWhenCreated {
-            viewModel.entertainment.collect {
-                when(it){
-                    is State.Loading->{
-                        binding.homeProgressBar.visibility=VISIBLE
-                    }
-                    is State.Success->{
-                        clearAdapter()
-                        binding.homeProgressBar.visibility=GONE
-                        homeAdapter.setData(it.data)
-                    }
-                    is State.Error->{
-                        binding.homeProgressBar.visibility=VISIBLE
-                        Toast.makeText(context,it.msg,Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-        }
-
-        lifecycleScope.launchWhenCreated {
-            viewModel.science.collect {
-                when(it){
-                    is State.Loading->{
-                        binding.homeProgressBar.visibility=VISIBLE
-                    }
-                    is State.Success->{
-                        clearAdapter()
-                        binding.homeProgressBar.visibility=GONE
-                        homeAdapter.setData(it.data)
-                    }
-                    is State.Error->{
-                        binding.homeProgressBar.visibility=VISIBLE
-                        Toast.makeText(context,it.msg,Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-        }
-
-        lifecycleScope.launchWhenCreated {
-            viewModel.health.collect {
-                when(it){
-                    is State.Loading->{
-                        binding.homeProgressBar.visibility=VISIBLE
-                    }
-                    is State.Success->{
-                        clearAdapter()
-                        binding.homeProgressBar.visibility=GONE
-                        homeAdapter.setData(it.data)
-                    }
-                    is State.Error->{
-                        binding.homeProgressBar.visibility=VISIBLE
-                        Toast.makeText(context,it.msg,Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-        }
-
-        lifecycleScope.launchWhenCreated {
-            viewModel.technology.collect {
-                when(it){
-                    is State.Loading->{
-                        binding.homeProgressBar.visibility=VISIBLE
-                    }
-                    is State.Success->{
-                        clearAdapter()
-                        binding.homeProgressBar.visibility=GONE
-                        homeAdapter.setData(it.data)
-                    }
-                    is State.Error->{
-                        binding.homeProgressBar.visibility=VISIBLE
+                        binding.homeProgressBar.hide()
                         Toast.makeText(context,it.msg,Toast.LENGTH_LONG).show()
                     }
                 }
@@ -269,4 +173,5 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private fun clearAdapter(){
         homeAdapter.clearData()
     }
+
 }

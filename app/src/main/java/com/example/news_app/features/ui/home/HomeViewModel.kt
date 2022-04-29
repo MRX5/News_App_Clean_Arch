@@ -26,6 +26,9 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val getNewsUseCase: GetNewsUseCase
 ): ViewModel() {
+
+    var lastCheckedCategory=""
+
     private val _news= MutableStateFlow<State<List<News>>>(State.Idle)
     val news: StateFlow<State<List<News>>> get()=_news
 
