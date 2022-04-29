@@ -2,6 +2,7 @@ package com.example.news_app.features.ui.home
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
@@ -14,13 +15,16 @@ import com.example.news_app.databinding.FragmentHomeBinding
 import com.example.news_app.domain.model.News
 import com.example.news_app.features.base.BaseFragment
 import com.example.news_app.features.ui.home.adapter.HomeAdapter
+import com.example.news_app.utils.Constants.ALL_NEWS
 import com.example.news_app.utils.Constants.BUSINESS
 import com.example.news_app.utils.Constants.ENTERTAINMENT
 import com.example.news_app.utils.Constants.HEALTH
 import com.example.news_app.utils.Constants.SCIENCE
 import com.example.news_app.utils.Constants.SPORTS
 import com.example.news_app.utils.Constants.TECHNOLOGY
+import com.example.news_app.utils.ErrorType
 import com.example.news_app.utils.State
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -29,6 +33,8 @@ const val TAG="mostafa"
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     private val viewModel by viewModels<HomeViewModel>()
+    private lateinit var currentCategory:String
+    private lateinit var snackBar:Snackbar
 
     private val homeAdapter by lazy {
         HomeAdapter{
@@ -42,7 +48,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
         setupRecyclerView()
         initializeViews()
-        getNews()
+        getNews(ALL_NEWS)
         observe()
     }
 
@@ -57,6 +63,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
             chipTechnology.setOnClickListener(clickListener)
         }
 
+        snackBar=Snackbar.make(binding.homeScrollView,getString(R.string.no_internet_connection),Snackbar.LENGTH_INDEFINITE)
+        snackBar.animationMode=Snackbar.ANIMATION_MODE_SLIDE
+
     }
 
     private fun setupRecyclerView() {
@@ -67,102 +76,88 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     }
 
     private val clickListener=View.OnClickListener { view->
-        when(view.id){
-            R.id.chip_all_news->{
-                if(viewModel.news.value !is State.Success) {
-                    getNews()
-                }else if(viewModel.news.value is State.Success){
-                    backToChip((viewModel.news.value as State.Success<List<News>>).data)
+        binding.apply {
+            when (view.id) {
+                R.id.chip_all_news -> {
+                    if (currentCategory != ALL_NEWS) {
+                        clearAdapter()
+                        getNews(ALL_NEWS)
+                    }
                 }
-            }
-            R.id.chip_business->{
-                if(viewModel.business.value !is State.Success) {
-                    getNews(BUSINESS)
-                }else if(viewModel.business.value is State.Success){
-                    backToChip((viewModel.business.value as State.Success<List<News>>).data)
+                R.id.chip_business -> {
+                    if (currentCategory != BUSINESS) {
+                        clearAdapter()
+                        getNews(BUSINESS)
+                    }
                 }
-            }
-            R.id.chip_entertainment->{
-                if(viewModel.entertainment.value !is State.Success) {
-                    getNews(ENTERTAINMENT)
-                }else if(viewModel.entertainment.value is State.Success){
-                    backToChip((viewModel.entertainment.value as State.Success<List<News>>).data)
+                R.id.chip_entertainment -> {
+                    if (currentCategory != ENTERTAINMENT) {
+                        clearAdapter()
+                        getNews(ENTERTAINMENT)
+                    }
                 }
-            }
-            R.id.chip_health->{
-                if(viewModel.health.value !is State.Success) {
-                    getNews(HEALTH)
-                }else if(viewModel.health.value is State.Success){
-                    backToChip((viewModel.health.value as State.Success<List<News>>).data)
+                R.id.chip_health -> {
+                    if (currentCategory != HEALTH) {
+                        clearAdapter()
+                        getNews(HEALTH)
+                    }
                 }
-            }
-            R.id.chip_science->{
-                if(viewModel.science.value !is State.Success) {
-                    getNews(SCIENCE)
-                }else if(viewModel.science.value is State.Success){
-                    backToChip((viewModel.science.value as State.Success<List<News>>).data)
+                R.id.chip_science -> {
+                    if (currentCategory != SCIENCE) {
+                        clearAdapter()
+                        getNews(SCIENCE)
+                    }
                 }
-            }
-            R.id.chip_sports->{
-                if (viewModel.sports.value !is State.Success) {
-                    getNews(SPORTS)
-                }else if(viewModel.sports.value is State.Success){
-                    backToChip((viewModel.sports.value as State.Success<List<News>>).data)
+                R.id.chip_sports -> {
+                    if (currentCategory != SPORTS) {
+                        clearAdapter()
+                        currentCategory = SPORTS
+                        getNews(SPORTS)
+                    }
                 }
-            }
-            R.id.chip_technology->{
-                if(viewModel.technology.value !is State.Success) {
-                    getNews(TECHNOLOGY)
-                }else if(viewModel.technology.value is State.Success){
-                    backToChip((viewModel.technology.value as State.Success<List<News>>).data)
+                R.id.chip_technology -> {
+                    if (currentCategory != TECHNOLOGY) {
+                        clearAdapter()
+                        getNews(TECHNOLOGY)
+                    }
                 }
             }
         }
     }
 
 
-    private fun getNews(category:String=""){
+    private fun getNews(category:String){
         viewModel.getNews(category,"eg")
-        viewModel.lastCheckedCategory=category
+        currentCategory=category
     }
 
     private fun observe(){
-        observeCategory(viewModel.news)
-        observeCategory(viewModel.sports)
-        observeCategory(viewModel.health)
-        observeCategory(viewModel.business)
-        observeCategory(viewModel.entertainment)
-        observeCategory(viewModel.science)
-        observeCategory(viewModel.technology)
-    }
-
-    private fun observeCategory(categoryStateFlow: StateFlow<State<List<News>>>) {
         lifecycleScope.launchWhenCreated {
-            categoryStateFlow.collect {
+            viewModel.news.collect {
                 when(it){
                     is State.Loading->{
                         binding.homeProgressBar.show()
+                        binding.errorLayout.hide()
                     }
                     is State.Success->{
-                        clearAdapter()
-                        binding.homeProgressBar.hide()
+                            binding.homeProgressBar.hide()
+                            binding.errorLayout.hide()
+
                         homeAdapter.setData(it.data)
                     }
                     is State.Error->{
                         binding.homeProgressBar.hide()
-                        Toast.makeText(context,it.msg,Toast.LENGTH_LONG).show()
+                        if(it.type==ErrorType.ERROR_WITHOUT_CACHE){
+                                binding.errorLayout.show()
+                        }
+                        else if(it.type==ErrorType.ERROR_WITH_CACHE){
+                            //snackBar.show()
+                            Toast.makeText(context,it.msg,Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             }
-
         }
-    }
-
-
-    //clear current adapter and add current chip data
-    private fun backToChip(newsList:List<News>){
-        clearAdapter()
-        homeAdapter.setData(newsList)
     }
 
     private fun clearAdapter(){

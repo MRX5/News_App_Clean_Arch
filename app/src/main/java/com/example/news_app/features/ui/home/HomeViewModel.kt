@@ -27,42 +27,15 @@ class HomeViewModel @Inject constructor(
     private val getNewsUseCase: GetNewsUseCase
 ): ViewModel() {
 
-    var lastCheckedCategory=""
-
     private val _news= MutableStateFlow<State<List<News>>>(State.Idle)
     val news: StateFlow<State<List<News>>> get()=_news
 
-    private val _sports= MutableStateFlow<State<List<News>>>(State.Idle)
-    val sports: StateFlow<State<List<News>>> get()=_sports
-
-    private val _science= MutableStateFlow<State<List<News>>>(State.Idle)
-    val science: StateFlow<State<List<News>>> get()=_science
-
-    private val _health= MutableStateFlow<State<List<News>>>(State.Idle)
-    val health: StateFlow<State<List<News>>> get()=_health
-
-    private val _technology= MutableStateFlow<State<List<News>>>(State.Idle)
-    val technology: StateFlow<State<List<News>>> get()=_technology
-
-    private val _business= MutableStateFlow<State<List<News>>>(State.Idle)
-    val business: StateFlow<State<List<News>>> get()=_business
-
-    private val _entertainment= MutableStateFlow<State<List<News>>>(State.Idle)
-    val entertainment: StateFlow<State<List<News>>> get()=_entertainment
-
-     fun getNews(category:String, country:String){
+    fun getNews(category:String, country:String){
         viewModelScope.launch {
             getNewsUseCase(category,country).onEach {
-                    when(category) {
-                        ""->_news.value = it
-                        SPORTS->{_sports.value = it}
-                        SCIENCE->_science.value = it
-                        HEALTH->_health.value = it
-                        TECHNOLOGY->_technology.value = it
-                        BUSINESS->_business.value = it
-                        ENTERTAINMENT->_entertainment.value = it
-                    }
+                _news.value = it
             }.launchIn(viewModelScope)
         }
     }
+
 }

@@ -6,9 +6,12 @@
     <data>
 
     </data>
+
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/home_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         android:layout_marginBottom="?attr/actionBarSize"
         tools:context=".features.ui.home.HomeFragment">
 
@@ -133,7 +136,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/home_recycler_view"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -150,6 +153,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/horizontal_scroll_view" />
+
+        <include
+            android:id="@+id/error_layout"
+            layout="@layout/error_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/home_recycler_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/home_recycler_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
