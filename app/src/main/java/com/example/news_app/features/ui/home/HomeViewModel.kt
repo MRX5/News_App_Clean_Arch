@@ -1,18 +1,9 @@
 package com.example.news_app.features.ui.home
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.news_app.domain.model.News
-import com.example.news_app.domain.use_case.GetNewsUseCase
-import com.example.news_app.utils.Constants.BUSINESS
-import com.example.news_app.utils.Constants.ENTERTAINMENT
-import com.example.news_app.utils.Constants.HEALTH
-import com.example.news_app.utils.Constants.SCIENCE
-import com.example.news_app.utils.Constants.SPORTS
-import com.example.news_app.utils.Constants.TECHNOLOGY
+import com.example.news_app.domain.use_case.news.GetNewsUseCase
 import com.example.news_app.utils.State
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

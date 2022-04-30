@@ -3,10 +3,8 @@ package com.example.news_app.features.ui.details
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.news_app.domain.model.News
-import com.example.news_app.domain.use_case.GetNewsUseCase
 import com.example.news_app.domain.use_case.bookmark.AddNewsToBookmarkUseCase
 import com.example.news_app.domain.use_case.bookmark.DeleteNewsFromBookmarkUseCase
-import com.example.news_app.domain.use_case.bookmark.GetBookmarkedNewsUseCase
 import com.example.news_app.domain.use_case.bookmark.GetNewsBookmarkStateUseCase
 import com.example.news_app.utils.State
 import dagger.hilt.android.lifecycle.HiltViewModel

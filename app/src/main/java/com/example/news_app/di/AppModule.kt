@@ -12,6 +12,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -61,4 +63,8 @@ object AppModule {
     @Singleton
     @Provides
     fun provideNetworkHelper(@ApplicationContext context:Context)=NetworkHelper(context)
+
+    @Singleton
+    @Provides
+    fun provideIoDispatcher(): CoroutineDispatcher =Dispatchers.IO
 }

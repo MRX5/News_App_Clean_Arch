@@ -11,4 +11,5 @@ interface NewsRepository {
     suspend fun getNewsBookmarkState(newsId: Int):Flow<State<Boolean>>
     suspend fun addNewsToBookmark(news: News)
     suspend fun deleteNewsFromBookmark(newsId:Int)
+    suspend fun searchForNews(query:String):Flow<State<List<News>>>
 }

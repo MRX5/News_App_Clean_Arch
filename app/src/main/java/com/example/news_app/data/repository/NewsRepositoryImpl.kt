@@ -10,8 +10,10 @@ import com.example.news_app.domain.model.News
 import com.example.news_app.domain.model.mapper.DomainMapper
 import com.example.news_app.utils.ErrorType
 import com.example.news_app.utils.NetworkHelper
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import okio.IOException
@@ -21,7 +23,8 @@ import javax.inject.Inject
 class NewsRepositoryImpl @Inject constructor(
     private val apiService: NewsApiService,
     private val newsDao: NewsDao,
-    private val networkHelper: NetworkHelper
+    private val networkHelper: NetworkHelper,
+    private val dispatcherIO:CoroutineDispatcher
 ) : NewsRepository {
 
     override suspend fun getNews(category: String, country: String) = flow {
@@ -60,7 +63,7 @@ class NewsRepositoryImpl @Inject constructor(
                 emit(State.Success(cachedData))
             }
         }
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(dispatcherIO)
 
     override suspend fun getBookmarkedNews() = flow {
         emit(State.Loading)
@@ -86,5 +89,21 @@ class NewsRepositoryImpl @Inject constructor(
     override suspend fun deleteNewsFromBookmark(newsId: Int) {
         newsDao.deleteNewsFromBookmark(newsId)
     }
+
+    override suspend fun searchForNews(query: String)=flow {
+        emit(State.Loading)
+        if(networkHelper.isNetworkConnected()){
+            val response=apiService.searchForNews(query)
+            if(response.isSuccessful){
+                val news=response.body()?.articles?.map { it.toDomainNews() }
+                news?.let {
+                    if(news.isNotEmpty()) emit(State.Success(news))
+                    else emit(State.Error(msg = "There is no results"))
+                }
+            }
+        }else{
+            emit(State.Error(msg = "Check internet connection"))
+        }
+    }.flowOn(dispatcherIO)
 
 }

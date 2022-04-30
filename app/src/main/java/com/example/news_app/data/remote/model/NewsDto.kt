@@ -1,6 +1,7 @@
 package com.example.newsapp.data.remote.model
 
 import com.example.news_app.data.local.model.NewsEntity
+import com.example.news_app.domain.model.News
 import com.example.news_app.domain.model.Source
 import com.google.gson.annotations.SerializedName
 
@@ -20,6 +21,15 @@ data class NewsDto(
         urlToImage = urlToImage,
         url=url,
         category = category
+    )
+
+    fun toDomainNews()=News(
+        title = title,
+        source = Source(source?.name),
+        description = description,
+        url = url,
+        urlToImage = urlToImage,
+        publishedAt = publishedAt
     )
 }
 

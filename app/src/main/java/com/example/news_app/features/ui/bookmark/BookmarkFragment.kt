@@ -49,14 +49,14 @@ class BookmarkFragment : BaseFragment<FragmentBookmarkBinding>(R.layout.fragment
             viewModel.news.collect {
                 when(it){
                     is State.Loading->{
-                        binding.bookmarkRecyclerView.show()
+                        binding.bookmarkProgressBar.show()
                     }
                     is State.Success->{
-                        binding.bookmarkRecyclerView.hide()
+                        binding.bookmarkProgressBar.hide()
                         bookmarkAdapter.setData(it.data)
                     }
                     is State.Error->{
-                        binding.bookmarkRecyclerView.hide()
+                        binding.bookmarkProgressBar.hide()
                         binding.errorMsg.show()
                         binding.imageView.show()
                     }
