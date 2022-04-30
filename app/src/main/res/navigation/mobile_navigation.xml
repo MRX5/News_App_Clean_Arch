@@ -22,10 +22,14 @@
         tools:layout="@layout/fragment_search" />
 
     <fragment
-        android:id="@+id/navigation_favourites"
-        android:name="com.example.news_app.features.ui.favourites.FavouritesFragment"
-        android:label="@string/favourites"
-        tools:layout="@layout/fragment_favourites" />
+        android:id="@+id/navigation_bookmark"
+        android:name="com.example.news_app.features.ui.bookmark.BookmarkFragment"
+        android:label="@string/bookmark"
+        tools:layout="@layout/fragment_bookmark" >
+        <action
+            android:id="@+id/action_navigation_bookmark_to_detailsActivity"
+            app:destination="@id/detailsActivity" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_account"
         android:name="com.example.news_app.features.ui.account.AccountFragment"

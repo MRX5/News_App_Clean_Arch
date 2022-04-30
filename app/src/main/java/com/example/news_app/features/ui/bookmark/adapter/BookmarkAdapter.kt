@@ -1,18 +1,17 @@
-package com.example.news_app.features.ui.home.adapter
+package com.example.news_app.features.ui.bookmark.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.example.news_app.R
 import com.example.news_app.databinding.SmallNewsLayoutBinding
 import com.example.news_app.domain.model.News
 import com.example.news_app.features.base.BaseViewHolder
-import kotlinx.coroutines.NonDisposableHandle.parent
 
-class HomeAdapter(private val click:(news:News)->Unit): RecyclerView.Adapter<HomeAdapter.SmallViewHolder>() {
+class BookmarkAdapter(private val click:(news:News)->Unit): RecyclerView.Adapter<BookmarkAdapter.SmallViewHolder>() {
 
     private val newsList= mutableListOf<News>()
 
@@ -20,7 +19,6 @@ class HomeAdapter(private val click:(news:News)->Unit): RecyclerView.Adapter<Hom
         val inflater=LayoutInflater.from(parent.context)
         return SmallViewHolder(DataBindingUtil.inflate(inflater, R.layout.small_news_layout,parent,false))
     }
-
 
     override fun onBindViewHolder(holder: SmallViewHolder, position: Int) {
         holder.bind(newsList[position])
@@ -31,10 +29,6 @@ class HomeAdapter(private val click:(news:News)->Unit): RecyclerView.Adapter<Hom
      fun setData(newsList:List<News>){
         this.newsList.addAll(newsList)
          notifyDataSetChanged()
-    }
-    fun clearData(){
-        newsList.clear()
-        notifyDataSetChanged()
     }
 
     inner class SmallViewHolder(private val binding:SmallNewsLayoutBinding):
@@ -47,7 +41,5 @@ class HomeAdapter(private val click:(news:News)->Unit): RecyclerView.Adapter<Hom
             }
         }
     }
-
-
 
 }

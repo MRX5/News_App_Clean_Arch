@@ -12,7 +12,6 @@ import com.example.news_app.R
 import com.example.news_app.utils.common.extentions.hide
 import com.example.news_app.utils.common.extentions.show
 import com.example.news_app.databinding.FragmentHomeBinding
-import com.example.news_app.domain.model.News
 import com.example.news_app.features.base.BaseFragment
 import com.example.news_app.features.ui.home.adapter.HomeAdapter
 import com.example.news_app.utils.Constants.ALL_NEWS
@@ -26,26 +25,27 @@ import com.example.news_app.utils.ErrorType
 import com.example.news_app.utils.State
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
-const val TAG="mostafa"
+
+
 @AndroidEntryPoint
-class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
+class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
+    OnRetryButtonClickListener {
 
     private val viewModel by viewModels<HomeViewModel>()
-    private lateinit var currentCategory:String
-    private lateinit var snackBar:Snackbar
+    private lateinit var currentCategory: String
+    private lateinit var snackBar: Snackbar
 
     private val homeAdapter by lazy {
-        HomeAdapter{
-            val directions=HomeFragmentDirections.actionNavigationHomeToDetailsActivity(it)
+        HomeAdapter {
+            val directions = HomeFragmentDirections.actionNavigationHomeToDetailsActivity(it)
             findNavController().navigate(directions)
         }
     }
-
+    
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding.errorLayout.handler = this
         setupRecyclerView()
         initializeViews()
         getNews(ALL_NEWS)
@@ -63,19 +63,23 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
             chipTechnology.setOnClickListener(clickListener)
         }
 
-        snackBar=Snackbar.make(binding.homeScrollView,getString(R.string.no_internet_connection),Snackbar.LENGTH_INDEFINITE)
-        snackBar.animationMode=Snackbar.ANIMATION_MODE_SLIDE
+        snackBar = Snackbar.make(
+            binding.root,
+            getString(R.string.no_internet_connection),
+            Snackbar.LENGTH_INDEFINITE
+        )
+        snackBar.animationMode = Snackbar.ANIMATION_MODE_SLIDE
 
     }
 
     private fun setupRecyclerView() {
         binding.homeRecyclerView.apply {
             setHasFixedSize(true)
-            adapter=homeAdapter
+            adapter = homeAdapter
         }
     }
 
-    private val clickListener=View.OnClickListener { view->
+    private val clickListener = View.OnClickListener { view ->
         binding.apply {
             when (view.id) {
                 R.id.chip_all_news -> {
@@ -126,33 +130,32 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     }
 
 
-    private fun getNews(category:String){
-        viewModel.getNews(category,"eg")
-        currentCategory=category
+    private fun getNews(category: String) {
+        viewModel.getNews(category, "eg")
+        currentCategory = category
     }
 
-    private fun observe(){
+    private fun observe() {
         lifecycleScope.launchWhenCreated {
             viewModel.news.collect {
-                when(it){
-                    is State.Loading->{
+                when (it) {
+                    is State.Loading -> {
                         binding.homeProgressBar.show()
-                        binding.errorLayout.hide()
+                        binding.errorLayout.root.hide()
                     }
-                    is State.Success->{
-                            binding.homeProgressBar.hide()
-                            binding.errorLayout.hide()
-
+                    is State.Success -> {
+                        binding.homeProgressBar.hide()
+                        binding.errorLayout.root.hide()
                         homeAdapter.setData(it.data)
                     }
-                    is State.Error->{
+                    is State.Error -> {
                         binding.homeProgressBar.hide()
-                        if(it.type==ErrorType.ERROR_WITHOUT_CACHE){
-                                binding.errorLayout.show()
-                        }
-                        else if(it.type==ErrorType.ERROR_WITH_CACHE){
+                        if (it.type == ErrorType.ERROR_WITHOUT_CACHE) {
+                            binding.errorLayout.root.show()
+
+                        } else if (it.type == ErrorType.ERROR_WITH_CACHE) {
                             //snackBar.show()
-                            Toast.makeText(context,it.msg,Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
@@ -160,8 +163,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         }
     }
 
-    private fun clearAdapter(){
+    private fun clearAdapter() {
         homeAdapter.clearData()
     }
 
+    override fun onRetryButtonClick() {
+        viewModel.getNews(currentCategory, "eg")
+    }
+
+}
+
+interface OnRetryButtonClickListener {
+    fun onRetryButtonClick()
 }

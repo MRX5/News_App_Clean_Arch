@@ -5,11 +5,13 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class News(
+    val id:Int?,
     val title: String?,
     val source: Source?,
     val description: String?,
     val urlToImage: String?,
-    var publishedAt: String?
+    var publishedAt: String?,
+    val url:String?
 ): Parcelable
 
 @Parcelize

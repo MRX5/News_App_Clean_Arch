@@ -20,11 +20,13 @@ data class NewsEntity(
 ) {
     fun toNews(): News {
         return News(
+            id=id,
             title = title,
             source = source,
             description = description,
             urlToImage = urlToImage,
-            publishedAt = publishedAt
+            publishedAt = publishedAt,
+            url=url
         )
     }
 }

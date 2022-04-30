@@ -7,4 +7,8 @@ import kotlinx.coroutines.flow.Flow
 interface NewsRepository {
 
     suspend fun getNews(category:String,country:String): Flow<State<List<News>>>
+    suspend fun getBookmarkedNews():Flow<State<List<News>>>
+    suspend fun getNewsBookmarkState(newsId: Int):Flow<State<Boolean>>
+    suspend fun addNewsToBookmark(news: News)
+    suspend fun deleteNewsFromBookmark(newsId:Int)
 }

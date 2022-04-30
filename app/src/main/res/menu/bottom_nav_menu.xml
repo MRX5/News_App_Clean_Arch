@@ -12,9 +12,9 @@
         android:title="@string/search" />
 
     <item
-        android:id="@+id/navigation_favourites"
+        android:id="@+id/navigation_bookmark"
         android:icon="@drawable/icon_bookmark"
-        android:title="@string/favourites" />
+        android:title="@string/bookmark" />
 
     <item android:id="@+id/navigation_account"
         android:icon="@drawable/icon_account"

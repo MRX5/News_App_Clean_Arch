@@ -1,33 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="handler"
+            type="com.example.news_app.features.ui.home.OnRetryButtonClickListener" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/error_layout_constraint_layout"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:scaleType="fitCenter"
-        android:contentDescription="@string/no_internet_connection"
-        android:src="@drawable/no_internet_icon"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:contentDescription="@string/no_internet_connection"
+            android:scaleType="fitCenter"
+            android:src="@drawable/no_internet_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+        <TextView
             android:id="@+id/error_msg"
-            android:fontFamily="@font/cairo_bold"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:textSize="20sp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/cairo_bold"
             android:text="@string/no_internet_connection"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="@+id/imageView"
             app:layout_constraintStart_toStartOf="@+id/imageView"
             app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+        <Button
+            android:id="@+id/retry_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/retry"
+            android:onClick="@{()->handler.onRetryButtonClick()}"
+            android:fontFamily="@font/cairo_bold"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/error_msg" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
