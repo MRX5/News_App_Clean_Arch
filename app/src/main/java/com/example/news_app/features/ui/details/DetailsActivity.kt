@@ -1,5 +1,7 @@
 package com.example.news_app.features.ui.details
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -10,6 +12,8 @@ import androidx.navigation.navArgs
 import com.example.news_app.R
 import com.example.news_app.databinding.ActivityDetailsBinding
 import com.example.news_app.domain.model.News
+import com.example.news_app.features.ui.web_view.NewsWebPageActivity
+import com.example.news_app.features.ui.web_view.NewsWebPageActivity.Companion.NEWS_URL
 import com.example.news_app.utils.State
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -52,6 +56,12 @@ class DetailsActivity : AppCompatActivity() {
 
     private fun populateUi(news: News){
         binding.news=news
+        binding.goToWebPageBtn.setOnClickListener {
+            val intent=Intent(this,NewsWebPageActivity::class.java).apply {
+                putExtra(NEWS_URL,newsDetails.url)
+            }
+            startActivity(intent)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -75,7 +85,21 @@ class DetailsActivity : AppCompatActivity() {
             }
             return true
         }
+        else if(item.itemId==R.id.action_share){
+            shareNews()
+            return true
+        }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun shareNews() {
+        val shareIntent= Intent().apply {
+            action = Intent.ACTION_SEND
+            type="text/plain"
+            putExtra(Intent.EXTRA_TEXT, Uri.parse(newsDetails.url))
+        }
+        startActivity(Intent.createChooser(shareIntent,"Share with"))
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -83,3 +107,4 @@ class DetailsActivity : AppCompatActivity() {
         return true
     }
 }
+

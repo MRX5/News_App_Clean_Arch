@@ -14,9 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.News_App">
         <activity
+            android:name=".features.ui.web_view.NewsWebPageActivity"
+            android:exported="false" />
+        <activity
             android:name=".features.ui.details.DetailsActivity"
             android:exported="false" />
-
         <activity
             android:name=".features.MainActivity"
             android:exported="true"
