@@ -69,7 +69,7 @@
                 android:fontFamily="@font/cairo_bold"
                 android:maxLines="2"
                 android:text="@{news.title}"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/source_name" />

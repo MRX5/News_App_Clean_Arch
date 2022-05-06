@@ -23,9 +23,6 @@ class NewsWebPageActivity : AppCompatActivity() {
 
         val newsUrl=intent.getStringExtra(NEWS_URL)?:""
         binding.webView.loadUrl(newsUrl)
-
-
-
     }
 
     private fun setupToolbar() {

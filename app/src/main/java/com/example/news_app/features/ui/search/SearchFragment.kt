@@ -82,9 +82,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
 
     override fun onQueryTextChange(newText: String?): Boolean {
         newText?.let {
-            viewModel.searchForNews(newText)
+            if(newText.isNotEmpty()) {
+                viewModel.searchForNews(newText)
+            }
         }
-
         return true
     }
 
