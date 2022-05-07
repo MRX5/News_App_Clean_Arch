@@ -9,6 +9,7 @@
             android:entryValues="@array/country_values"
             android:key="@string/countryKey"
             android:title="@string/country"
+            app:defaultValue="eg"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
