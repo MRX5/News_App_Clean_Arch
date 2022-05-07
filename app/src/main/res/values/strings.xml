@@ -19,4 +19,23 @@
     <string name="retry">Retry</string>
     <string name="go_to_news_page">Go to news page</string>
     <string name="share">Share</string>
+
+    <!--preferences-->
+    <string name="themeKey">theme</string>
+    <string name="countryKey">country</string>
+    <string name="languageKey">language</string>
+
+    <string name="country">Country</string>
+    <string name="language">Language</string>
+    <string name="theme">Theme</string>
+    <string name="dark_theme">Dark Theme</string>
+    <string name="turn_off_dark_mode">Turn off dark theme</string>
+    <string name="turn_on_dark_mode">Turn on dark theme</string>
+
+    <string name="arabic">Arabic</string>
+    <string name="english">English</string>
+    <string name="welcome_back">Welcome back</string>
+    <string name="search_for_news">Search for news..</string>
+
 </resources>
+

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        android:icon="@drawable/icon_flag"
+        android:title="@string/country">
+        <ListPreference
+            android:entries="@array/country_entries"
+            android:entryValues="@array/country_values"
+            android:key="@string/countryKey"
+            android:title="@string/country"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:icon="@drawable/icon_language"
+        android:title="@string/language">
+        <ListPreference
+            android:entries="@array/language_entries"
+            android:entryValues="@array/language_values"
+            android:key="@string/languageKey"
+            android:title="@string/language"
+            android:defaultValue="en"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:icon="@drawable/icon_theme"
+        android:title="@string/theme">
+        <SwitchPreferenceCompat
+            android:key="@string/themeKey"
+            android:title="@string/dark_theme"
+            app:defaultValue="false"
+            android:summaryOn="@string/turn_off_dark_mode"
+            android:summaryOff="@string/turn_on_dark_mode"
+            />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

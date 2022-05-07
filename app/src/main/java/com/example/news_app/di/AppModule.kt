@@ -1,6 +1,7 @@
 package com.example.news_app.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.room.Room
 import com.example.news_app.data.remote.NewsApiService
 import com.example.news_app.utils.Constants

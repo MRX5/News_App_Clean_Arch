@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">News_App</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="home">الرئيسية</string>
+    <string name="search">ابحث</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="news">الأخبار</string>
+    <string name="health">الصحة</string>
+    <string name="sports">الرياضة</string>
+    <string name="all">الكل</string>
+    <string name="science">العلوم</string>
+    <string name="technology">التكنولوجيا</string>
+    <string name="business">التجارة</string>
+    <string name="entertainment">وسائل الترفيه</string>
+    <string name="account">حسابى</string>
+    <string name="bookmark">المحفوظات</string>
+    <string name="no_internet_connection">لا يوجد اتصال بالإنترنت</string>
+    <string name="bookmark_empty">لا توجد محفوظات</string>
+    <string name="retry">إعادة المحاولة</string>
+    <string name="go_to_news_page">الذهاب إالى صفحة الخبر</string>
+    <string name="share">مشاركة</string>
+
+    <!--preferences-->
+    <string name="themeKey">theme</string>
+    <string name="countryKey">country</string>
+    <string name="languageKey">language</string>
+
+    <string name="country">البلد</string>
+    <string name="language">اللغة</string>
+    <string name="theme">الثيمات</string>
+    <string name="dark_theme">الوضع الليلى</string>
+    <string name="turn_off_dark_mode">إغلاق الوضع الليلى</string>
+    <string name="turn_on_dark_mode">تفعيل الوضع الليلى</string>
+
+    <string name="arabic">العربية</string>
+    <string name="english">الأنجليزية</string>
+    <string name="welcome_back">مرحبًا بعودتك</string>
+    <string name="search_for_news">ابحث عن الأخبار..</string>
+</resources>

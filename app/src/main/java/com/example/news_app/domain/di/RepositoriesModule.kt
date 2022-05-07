@@ -11,6 +11,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineDispatcher
+import javax.inject.Singleton
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -21,13 +22,5 @@ object RepositoriesModule {
     @Provides
     fun provideNewsRepository(apiService: NewsApiService, newsDao: NewsDao,networkHelper: NetworkHelper,dispatcher: CoroutineDispatcher): NewsRepository =
         NewsRepositoryImpl(apiService,newsDao,networkHelper,dispatcher)
-
-/*
-    @ViewModelScoped
-    @Provides
-    fun provideAuthRepository(): AuthRepository =AuthRepositoryImpl()
-*/
-
-
 
 }
