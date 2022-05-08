@@ -133,7 +133,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
 
 
     private fun getNews(category: String) {
-        Log.d("mostafa", NewsApplication.country)
         viewModel.getNews(category, NewsApplication.country)
         currentCategory = category
     }
@@ -171,7 +170,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
     }
 
     override fun onRetryButtonClick() {
-        viewModel.getNews(currentCategory, "eg")
+        viewModel.getNews(currentCategory, NewsApplication.country)
     }
 
 }
