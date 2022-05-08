@@ -8,12 +8,14 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.news_app.NewsApplication
 import com.example.news_app.R
 import com.example.news_app.utils.common.extentions.hide
 import com.example.news_app.utils.common.extentions.show
 import com.example.news_app.databinding.FragmentHomeBinding
 import com.example.news_app.features.base.BaseFragment
 import com.example.news_app.features.ui.home.adapter.HomeAdapter
+import com.example.news_app.features.ui.main.MainActivity
 import com.example.news_app.utils.Constants.ALL_NEWS
 import com.example.news_app.utils.Constants.BUSINESS
 import com.example.news_app.utils.Constants.ENTERTAINMENT
@@ -131,7 +133,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
 
 
     private fun getNews(category: String) {
-        viewModel.getNews(category, "eg")
+        Log.d("mostafa", NewsApplication.country)
+        viewModel.getNews(category, NewsApplication.country)
         currentCategory = category
     }
 

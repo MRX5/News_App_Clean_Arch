@@ -22,25 +22,31 @@ import java.util.*
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(),SharedPreferences.OnSharedPreferenceChangeListener{
 
+
     private lateinit var binding: ActivityMainBinding
     private lateinit var preferences:SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupConfiguration()
+        setupAppConfiguration()
+        setupNavigation()
 
-        val navView: BottomNavigationView = binding.navView
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        navView.setupWithNavController(navController)
     }
 
-    private fun setupConfiguration() {
+    private fun setupAppConfiguration() {
         preferences=PreferenceManager.getDefaultSharedPreferences(this)
         val isDarkTheme=preferences.getBoolean(getString(R.string.themeKey),false)
         setAppTheme(isDarkTheme)
+    }
+
+    private fun setupNavigation() {
+        val navView: BottomNavigationView = binding.navView
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        navView.setupWithNavController(navController)
     }
 
     private fun setAppTheme(isDarkTheme:Boolean) {

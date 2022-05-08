@@ -2,14 +2,14 @@
 <resources>
     <string-array name="country_entries">
         <item>Egypt</item>
+        <item>United States</item>
         <item>France</item>
-        <item>England</item>
     </string-array>
 
     <string-array name="country_values">
         <item>eg</item>
+        <item>us</item>
         <item>fr</item>
-        <item>en</item>
     </string-array>
 
 
